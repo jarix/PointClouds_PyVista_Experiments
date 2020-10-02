@@ -10,7 +10,7 @@ import numpy as np
 import pyvista as pv
 from pyvista import examples
 
-def generate_points(decimateFactor = 0.05):
+def get_example_point_cloud(decimateFactor = 0.05):
     """ Create numpy array of points from PyVista LiDAR example """
     
     # Get PyVista Lidar Example Data
@@ -28,11 +28,11 @@ def generate_points(decimateFactor = 0.05):
 if __name__ == "__main__":
 
     # Get points
-    pointArray = generate_points()
+    points_array = get_example_point_cloud()
 
     # Create a PyVista Mesh
-    pointCloud = pv.PolyData(pointArray)
+    point_cloud = pv.PolyData(points_array)
 
     # Plot PyVista mesh
-    pointCloud.plot(eye_dome_lighting=True)  
+    point_cloud.plot(eye_dome_lighting=True)  
 
