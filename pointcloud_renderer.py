@@ -27,39 +27,81 @@ def get_example_point_cloud(decimateFactor = 0.05):
     return dataset.points[pointIds]
 
 
-def create_ellipse_point_cloud():
-    """ Create an ellipse shape point cloud for testing
+def create_ellipse_points(radius=0.5, height=2.0, step=0.05, x_offset=0.0, y_offset=0.0, z_offset=0.0):
+    """ Create an ellipse shape points array for testing
     """
     points_array = []
 
-    for Z in np.arange(-1.0, 1.0, 0.05):
+    z_range = abs(height/2)
 
-        for angle in np.arange(0.0, 2*math.pi, 0.05):
+    for z in np.arange(-z_range, z_range, step):
+
+        for angle in np.arange(0.0, 2*math.pi, step):
     
-            x = 0.5 * math.cos(angle)
+            x = radius * math.cos(angle)
             y = math.sin(angle)
-            z = Z
-            point = [x, y, z]
+            point = [x + x_offset, y + y_offset, z + z_offset]
 
             points_array.append(point)
 
     return np.array(points_array)
 
 
+def create_box_points(x_size=1.0, y_size=1.0, z_size=1.0, step=0.05, x_offset=0.0, y_offset=0.0, z_offset=0.0):
+    """ Create an box shape points array for testing
+    """
+    points_array = []
+    x_range = abs(x_size/2)
+    y_range = abs(y_size/2)
+    z_range = abs(x_size/2)
+    
+    for z in [-z_range, z_range]:
+        for x in np.arange(-x_range, x_range, step):
+            for y in np.arange(-y_range, y_range, step):
+                point = [x + x_offset, y + y_offset, z + z_offset]
+                points_array.append(point)
+
+    for y in [-y_range, y_range]:
+        for x in np.arange(-x_range, x_range, step):
+            for z in np.arange(-z_range, z_range, step):
+                point = [x + x_offset, y + y_offset, z + z_offset]
+                points_array.append(point)
+
+    for x in [-x_range, x_range]:
+        for y in np.arange(-y_range, y_range, step):
+            for z in np.arange(-z_range, z_range, step):
+                point = [x + x_offset, y + y_offset, z + z_offset]
+                points_array.append(point)
+
+    return np.array(points_array)
+ 
+
 if __name__ == "__main__":
 
     # Get points
     #point_array = get_example_point_cloud()
-    points_array = create_ellipse_point_cloud()
+    points_array1 = create_ellipse_points(x_offset=1.0, y_offset=2.0, z_offset=3.0)
+    print(f"Points Array1 type: {type(points_array1)}")
+    print(f"Points Array1 shape: {points_array1.shape}")
+    points_array2 = create_box_points(x_size=2.0, y_size=2.0, z_size=2.0, step=0.04)
+    print(f"Points Array2 type: {type(points_array2)}")
+    print(f"Points Array2 shape: {points_array2.shape}")
 
-    # Create a PyVista Mesh
+    points_array = np.concatenate((points_array1, points_array2), axis=0)
+    print(f"Points Array type: {type(points_array)}")
+    print(f"Points Array shape: {points_array.shape}")
+
+    # Create PyVista Meshes
     point_cloud = pv.PolyData(points_array)
 
     # Get a Z component of the point array
-    zData = points_array[:,-1]
-
+    #zData = points_array[:,-1]
+    xData = points_array[:,0]
+    print(f"xData points Array type: {type(xData)}")
+    print(f"xData points Array shape: {xData.shape}")  
     # Add to mesh
-    point_cloud["height"] = zData
+    #point_cloud["height"] = zData
+    point_cloud["distance"] = xData
 
     # Plot PyVista mesh
     point_cloud.plot(render_points_as_spheres=True)  
