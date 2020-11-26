@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """
-    VTK Point Cloud Rendered using PyVista Library.
-    Shows a color legend for Z dimension
+    VTK Point Cloud Rendered using PyVista Library
+    Create and render car shapes
 
     Author: Jari Honkanen
 
