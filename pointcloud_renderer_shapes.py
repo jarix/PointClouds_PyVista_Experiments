@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 """
-    VTK Point Cloud Rendered using PyVista Library.
+    VTK Point Cloud Rendered using PyVista Library
+    Create and render simple shapes
     Shows a color legend for Z dimension
 
     Author: Jari Honkanen
