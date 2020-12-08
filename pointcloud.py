@@ -273,6 +273,51 @@ class PointCloud:
 
         f.close()
 
+    def read_kitti_file(self, file_name, bPrint = False):
+        """
+        Read point cloud from a binary KITTI file
 
+        Parameters:
+            file_name (string) : Name and Path to the KITTI pointcloud file to be read
+            bPrint (bool) : Debug Print
+
+        Returns:
+            self.points_array : Numpy Array of the point cloud data
+
+        Exceptions:
+            IOError: if input file cannot be read
+            ValueError: invalid input parameter 
+        """       
+        try:
+            f = open(file_name, "rb")
+
+        except:
+            print("[ERROR]: Could not open file '" + file_name + "'")
+            raise IOError
+
+
+        points_list = []
+        content=f.read()
+
+        points_iter = struct.iter_unpack('ffff', content)
+
+        for idx,point in enumerate(points_iter):
+            points_list.append([point[0],point[1],point[2],point[3]])
+
+        self.points_array_full = np.asarray(points_list, dtype=np.float32)    
+        self.points_array = np.delete(self.points_array_full, 3, axis=1)
+
+        self.file_type = "BINARY"
+        self.point_cloud_type ="XYZI"
+        self.point_type = np.float32
+        self.width = len(self.points_array)
+        self.height = 1
+        self.viewpoint = "0 0 0 1 0 0 0"
+        self.num_points = len(self.points_array)
+        self.num_fields = 4
+
+        return self.points_array
+        
+        
 
         
