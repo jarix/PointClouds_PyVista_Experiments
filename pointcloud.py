@@ -4,6 +4,8 @@
 	
 	Supports reading point clouds from PCD files and writing them to PCD files
 
+	Author: Jari Honkanen
+
 """
 import numpy as np
 
